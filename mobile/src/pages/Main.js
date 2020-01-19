@@ -24,10 +24,8 @@ function Main({ navigation }) {
   const [techs, setTechs] = useState('');
 
   useEffect(() => {
-    subscribeToNewDevs(dev => {
-      setDevs([...devs, dev]);
-    }, [devs]);
-  });
+    subscribeToNewDevs(dev => setDevs([...devs, dev]));
+  }, [devs]);
 
   function setupWebsocket() {
     const { latitude, longitude } = currentRegion;
