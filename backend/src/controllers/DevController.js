@@ -19,9 +19,17 @@ module.exports = {
       return response.json(dev);
     }
 
-    const apiResponse = await axios.get(`https://api.github.com/users/${github_username}`);
+    const apiResponse = await axios.get(`https://api.github.com/users/${github_username}`).catch(error => {
+      return {"error": 'User does not exist on github'}
+    });
 
-    const { name = login, avatar_url, bio } = apiResponse.data;
+    if (apiResponse.error) {
+      return response.status(404).json(apiResponse);
+    }
+
+    let { name = login, avatar_url, bio } = apiResponse.data;
+
+    name = (name) ? name : apiResponse.data.login;
 
     const techsArray = parseStringAsArray(techs);
 
